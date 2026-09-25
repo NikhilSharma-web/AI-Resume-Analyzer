@@ -41,12 +41,14 @@ const groq = new Groq({
 // EMAIL TRANSPORTER
 // ===============================
 
-const tranporter = nodemailer.createTransport({
-    service: "gmail",
+const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
-    }
+    },
 });
 
 app.use(cors());
@@ -257,7 +259,7 @@ app.post("/api/auth/send-otp", async (req, res) => {
         });
 
         // Send OTP email
-        await tranporter.sendMail({
+        await transporter.sendMail({
             from: `"AI Resume Analyzer" <${process.env.EMAIL_USER}>`,
             to: user.email,
             subject: "Your Password Reset OTP - AI Resume Analyzer",
