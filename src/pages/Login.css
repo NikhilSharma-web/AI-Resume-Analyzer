@@ -1,0 +1,198 @@
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f7fb;
+    padding: 30px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: white;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(20, 30, 60, 0.06);
+}
+
+.auth-card h1 {
+    margin: 0;
+    color: #151b2e;
+    font-size: 28px;
+    text-align: center;
+}
+
+.auth-card>p {
+    text-align: center;
+    color: #7b8498;
+    margin-top: 8px;
+    margin-bottom: 28px;
+}
+
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.auth-card input {
+    width: 100%;
+    padding: 13px 14px;
+    box-sizing: border-box;
+    border: 1px solid #d9deeb;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    color: #172033;
+    background: white;
+    outline: none;
+}
+
+.auth-card input:focus {
+    border-color: #635bff;
+    box-shadow: 0 0 0 2px rgba(99, 91, 255, 0.1);
+}
+
+.auth-card form button {
+    padding: 13px;
+    border-radius: 8px;
+    background: #635bff;
+    color: white;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.auth-card form button:hover {
+    background: #5149e8;
+}
+
+.auth-card form button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.auth-register {
+    margin-top: 22px !important;
+    margin-bottom: 0 !important;
+    color: #7b8498;
+}
+
+.auth-register button {
+    background: transparent;
+    color: #635bff;
+    font-family: inherit;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 0;
+}
+
+.auth-register button:hover {
+    color: #5149e8;
+    text-decoration: underline;
+}
+
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-wrapper input {
+    width: 100%;
+    padding-right: 45px;
+    box-sizing: border-box;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 32px !important;
+    height: 32px !important;
+
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    background: transparent !important;
+    border: none !important;
+
+    cursor: pointer;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.password-toggle:hover {
+    background: transparent !important;
+}
+
+.password-toggle svg {
+    display: block;
+    opacity: 1;
+}
+
+/* Forgot Password  */
+.forgot-password {
+    display: block;
+    margin: 12px auto 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+
+    color: #6366f1;
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+.forgot-password:hover {
+    color: #4f46e5;
+    text-decoration: underline;
+}
+
+
+/* =========================
+   AUTH RESPONSIVE
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .auth-container {
+        padding: 20px 15px;
+    }
+
+    .auth-card {
+        padding: 25px 20px;
+        border-radius: 12px;
+    }
+
+    .auth-card h1 {
+        font-size: 24px;
+    }
+
+    .auth-card>p {
+        font-size: 13px;
+        margin-bottom: 22px;
+    }
+
+    .auth-card input {
+        font-size: 14px;
+    }
+
+    .auth-card form {
+        gap: 13px;
+    }
+}

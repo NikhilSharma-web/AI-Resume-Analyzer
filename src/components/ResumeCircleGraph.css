@@ -1,0 +1,383 @@
+.resume-circle-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 10px;
+    overflow: visible;
+}
+
+.resume-circle {
+    position: relative;
+    width: 520px;
+    height: 520px;
+    flex-shrink: 0;
+}
+
+/* =========================================
+   CENTER
+========================================= */
+
+.circle-center {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+    background: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 20;
+
+    box-shadow:
+        0 8px 25px rgba(20, 30, 60, 0.15),
+        inset 0 0 0 7px #f3f6fb;
+}
+
+.center-title {
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: #172033;
+    letter-spacing: 0.5px;
+}
+
+.center-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #635bff;
+    margin-top: 2px;
+}
+
+.center-line {
+    display: flex;
+    width: 55px;
+    height: 4px;
+    margin-top: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.center-line span:first-child {
+    width: 50%;
+    background: #7546e8;
+}
+
+.center-line span:last-child {
+    width: 50%;
+    background: #6394ff;
+}
+
+
+/* =========================================
+   SEGMENT GROUP
+========================================= */
+
+.segment-group {
+    position: absolute;
+    width: 220px;
+    height: 180px;
+
+    overflow: visible;
+    z-index: 5;
+}
+
+
+/* =========================================
+   MAIN COLORED SEGMENT
+========================================= */
+
+.circle-segment {
+    position: absolute;
+
+    width: 220px;
+    height: 180px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    /*
+    Rounded petal shape
+  */
+    border-radius: 42px 42px 55px 55px;
+
+    box-shadow:
+        0 8px 18px rgba(20, 30, 60, 0.10);
+
+    /*
+    Slight inward cut on the inner side
+    keeps the circular arrangement clean.
+  */
+}
+
+
+/* =========================================
+   SEGMENT POSITIONS
+========================================= */
+
+/* 01 — TOP */
+
+.segment-1 {
+    top: 18px;
+    left: 150px;
+}
+
+.segment-1 .circle-segment {
+    background: linear-gradient(135deg,
+            #ff4d4d,
+            #ed3037);
+
+    border-radius: 45px 45px 60px 60px;
+}
+
+
+/* 02 — RIGHT TOP */
+
+.segment-2 {
+    top: 154px;
+    right: 0;
+}
+
+.segment-2 .circle-segment {
+    background: linear-gradient(135deg,
+            #ffb51b,
+            #f39a00);
+
+    border-radius: 45px 45px 60px 60px;
+}
+
+
+/* 03 — RIGHT BOTTOM */
+
+.segment-3 {
+    bottom: 22px;
+    right: 42px;
+}
+
+.segment-3 .circle-segment {
+    background: linear-gradient(135deg,
+            #83bd31,
+            #67aa20);
+
+    border-radius: 45px 45px 60px 60px;
+}
+
+
+/* 04 — LEFT BOTTOM */
+
+.segment-4 {
+    bottom: 22px;
+    left: 42px;
+}
+
+.segment-4 .circle-segment {
+    background: linear-gradient(135deg,
+            #9a54d8,
+            #8144c3);
+
+    border-radius: 45px 45px 60px 60px;
+}
+
+
+/* 05 — LEFT TOP */
+
+.segment-5 {
+    top: 154px;
+    left: 0;
+}
+
+.segment-5 .circle-segment {
+    background: linear-gradient(135deg,
+            #2ba9d2,
+            #178dbb);
+
+    border-radius: 45px 45px 60px 60px;
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.segment-content {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: white;
+
+    padding: 20px 35px;
+
+    /*
+    Keeps content away from edges
+  */
+    transform: translateY(5px);
+}
+
+.segment-icon {
+    font-family: Arial, sans-serif;
+
+    font-size: 27px;
+    font-weight: bold;
+
+    line-height: 1;
+
+    margin-bottom: 9px;
+
+    color: white;
+}
+
+.segment-title {
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    margin-bottom: 6px;
+
+    white-space: nowrap;
+}
+
+.segment-score {
+    font-family: Arial, sans-serif;
+
+    font-size: 29px;
+    line-height: 1;
+
+    font-weight: 900;
+
+    color: white;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   STEP BADGES
+========================================= */
+
+.step-badge {
+    position: absolute;
+
+    width: 64px;
+    height: 64px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 50;
+
+    box-shadow:
+        0 5px 14px rgba(20, 30, 60, 0.22);
+
+    border: 4px solid white;
+}
+
+.step-badge::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -4px;
+
+    border-radius: 50%;
+
+    border: 3px solid #dce3ef;
+}
+
+.step-badge span {
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    color: #68758b;
+
+    line-height: 1;
+}
+
+.step-badge strong {
+    font-family: Arial, sans-serif;
+
+    font-size: 21px;
+
+    color: #172033;
+
+    line-height: 1;
+
+    margin-top: 3px;
+}
+
+
+/* =========================================
+   BADGE POSITION
+========================================= */
+
+/* 01 */
+
+.segment-1 .step-badge {
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+/* 02 */
+
+.segment-2 .step-badge {
+    top: 50%;
+    right: -27px;
+    transform: translateY(-50%);
+}
+
+
+/* 03 */
+
+.segment-3 .step-badge {
+    right: -15px;
+    bottom: -17px;
+}
+
+
+/* 04 */
+
+.segment-4 .step-badge {
+    left: -15px;
+    bottom: -17px;
+}
+
+
+/* 05 */
+
+.segment-5 .step-badge {
+    top: 50%;
+    left: -27px;
+    transform: translateY(-50%);
+}
