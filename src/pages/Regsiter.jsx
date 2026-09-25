@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./Login.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Register({ onLogin, onGoogleSignup }) {
 
     const [name, setName] = useState("");
@@ -15,7 +17,7 @@ function Register({ onLogin, onGoogleSignup }) {
             setLoading(true);
 
             const result = await fetch(
-                "http://localhost:5000/api/auth/google/signup",
+                `${API_URL}/api/auth/google/signup`,
                 {
                     method: "POST",
                     headers: {
@@ -109,7 +111,7 @@ function Register({ onLogin, onGoogleSignup }) {
             setLoading(true);
 
             const response = await fetch(
-                "http://localhost:5000/api/auth/register",
+                `${API_URL}/api/auth/register`,
                 {
                     method: "POST",
                     headers: {

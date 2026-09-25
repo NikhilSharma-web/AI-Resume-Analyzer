@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./ForgotPassword.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function ForgotPassword({ onLogin, email: initialEmail }) {
     const [email, setEmail] = useState(initialEmail || "");
     const [otp, setOtp] = useState("");
@@ -31,7 +33,7 @@ function ForgotPassword({ onLogin, email: initialEmail }) {
             setLoading(true);
 
             const response = await fetch(
-                "http://localhost:5000/api/auth/send-otp",
+                `${API_URL}/api/auth/send-otp`,
                 {
                     method: "POST",
                     headers: {
@@ -74,7 +76,7 @@ function ForgotPassword({ onLogin, email: initialEmail }) {
             setLoading(true);
 
             const response = await fetch(
-                "http://localhost:5000/api/auth/verify-otp",
+                `${API_URL}/api/auth/verify-otp`,
                 {
                     method: "POST",
                     headers: {
@@ -130,7 +132,7 @@ function ForgotPassword({ onLogin, email: initialEmail }) {
             setLoading(true);
 
             const response = await fetch(
-                "http://localhost:5000/api/auth/reset-password",
+                `${API_URL}/api/auth/reset-password`,
                 {
                     method: "POST",
                     headers: {

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./History.css"
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function History({onViewAnalysis}) {
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -10,7 +12,7 @@ function History({onViewAnalysis}) {
             const token = sessionStorage.getItem("token");
 
             const response = await fetch(
-                "http://localhost:5000/api/history",
+                `${API_URL}/api/history`,
                 {
                     method: "GET",
                     headers: {

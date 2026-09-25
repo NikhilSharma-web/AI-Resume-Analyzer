@@ -1,6 +1,7 @@
 import { useState } from "react"
-
 import "./App.css"
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 import ResumeCircleGraph from "./components/ResumeCircleGraph";
 
@@ -86,7 +87,7 @@ function App() {
       const token = sessionStorage.getItem("token");
 
       const response = await fetch(
-        "http://localhost:5000/api/analyze",
+        `${API_URL}/api/analyze`,
         {
           method: "POST",
 
