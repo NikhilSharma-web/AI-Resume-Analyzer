@@ -10,7 +10,7 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import authMiddleware from "./middleware/authmiddleware.js";
+import authMiddleware from "./middleware/authMiddleware.js";
 import { OAuth2Client } from "google-auth-library";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
