@@ -79,7 +79,7 @@ ai-resume-analyzer/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/NikhilSharma-web/ai-resume-analyzer.git
+git clone https://github.com/NikhilSharma-web/AI-Resume-Analyzer.git
 cd ai-resume-analyzer
 ```
 
