@@ -203,4 +203,4 @@ The application analyzes uploaded resumes and provides:
 **Nikhil Sharma**
 
 GitHub: https://github.com/NikhilSharma-web/
-LinkedIn: https://linkedin.com/in/nikhil-sharma-69111434/
+LinkedIn: www.linkedin.com/in/nikhil-sharma-69111434a
