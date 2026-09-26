@@ -13,11 +13,9 @@ import jwt from "jsonwebtoken";
 import authMiddleware from "./middleware/authMiddleware.js";
 import { OAuth2Client } from "google-auth-library";
 import crypto from "crypto";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 const app = express();
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 const googleClient = new OAuth2Client(
     process.env.GOOGLE_CLIENT_ID
@@ -39,7 +37,23 @@ const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY,
 });
 
+// ===============================
+// EMAIL TRANSPORTER
+// ===============================
 
+const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    requireTLS: true,
+
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+
+    family: 4,
+});
 
 app.use(cors());
 app.use(express.json());
@@ -203,116 +217,243 @@ app.post("/api/auth/send-otp", async (req, res) => {
     try {
         const { email } = req.body;
 
+        // Check email
         if (!email) {
             return res.status(400).json({
-                message: "Email is required.",
+                message: "Email is required."
             });
         }
 
-        // Check if user exists
+        // Find user
         const user = await prisma.user.findUnique({
             where: {
-                email: email.toLowerCase(),
-            },
+                email: email
+            }
         });
 
+        // Don't reveal whether email exists
         if (!user) {
-            return res.status(404).json({
-                message: "User not found.",
+            return res.json({
+                message: "If this email is registered, an OTP has been sent."
             });
         }
 
         // Generate 6-digit OTP
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const otp = crypto
+            .randomInt(100000, 1000000)
+            .toString();
 
-        // OTP expires after 10 minutes
-        const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+        // Hash OTP before saving
+        const otpHash = await bcrypt.hash(otp, 10);
 
-        // Hash OTP
-        const otpHash = crypto
-            .createHash("sha256")
-            .update(otp)
-            .digest("hex");
+        // OTP valid for 10 minutes
+        const otpExpiresAt = new Date(
+            Date.now() + 10 * 60 * 1000
+        );
 
-        // Save OTP in database
+        // Save OTP hash + expiry
         await prisma.user.update({
             where: {
-                id: user.id,
+                id: user.id
             },
             data: {
                 loginOtpHash: otpHash,
-                loginOtpExpiresAt: otpExpiresAt,
-            },
+                loginOtpExpiresAt: otpExpiresAt
+            }
         });
 
-        // Send OTP email using Resend
-        const { data, error } = await resend.emails.send({
-            from: "AI Resume Analyzer <onboarding@resend.dev>",
-            to: [email],
-            subject: "AI Resume Analyzer - Password Reset OTP",
+        // Send OTP email
+        await transporter.sendMail({
+            from: `"AI Resume Analyzer" <${process.env.EMAIL_USER}>`,
+            to: user.email,
+            subject: "Your Password Reset OTP - AI Resume Analyzer",
+
             html: `
-                <div style="
-                    font-family: Arial, sans-serif;
-                    max-width: 600px;
-                    margin: 0 auto;
-                    padding: 30px;
-                    border: 1px solid #ddd;
-                    border-radius: 10px;
+            <div style="
+                margin: 0;
+                padding: 40px 20px;
+                background-color: #f4f6f8;
+                font-family: Arial, Helvetica, sans-serif;
+            ">
+
+            <div style="
+                max-width: 600px;
+                margin: auto;
+                background-color: #ffffff;
+                border-radius: 10px;
+                padding: 40px;
+                box-sizing: border-box;
+                border: 1px solid #e5e7eb;
+            ">
+
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h1 style="
+                    margin: 0;
+                    color: #111827;
+                    font-size: 26px;
                 ">
-                    <h2>AI Resume Analyzer</h2>
+                    AI Resume Analyzer
+                </h1>
 
-                    <p>You requested to reset your password.</p>
+                <p style="
+                    margin-top: 8px;
+                    color: #6b7280;
+                    font-size: 14px;
+                ">
+                    Secure Password Reset
+                </p>
+            </div>
 
-                    <p>Your OTP is:</p>
+            <div style="
+                color: #374151;
+                font-size: 15px;
+                line-height: 1.7;
+            ">
+                <p>Hello <strong>${user.name}</strong></p>
 
-                    <div style="
-                        font-size: 32px;
-                        font-weight: bold;
-                        letter-spacing: 8px;
-                        margin: 20px 0;
-                    ">
-                        ${otp}
-                    </div>
+                <p>
+                    We received a request to reset the password for your
+                    <strong>AI Resume Analyzer</strong> account.
+                </p>
 
-                    <p>
-                        This OTP will expire in <strong>10 minutes</strong>.
-                    </p>
+                <p>
+                    Please use the verification code below to continue
+                    with your password reset:
+                </p>
+            </div>
 
-                    <p>
-                        If you did not request a password reset,
-                        you can safely ignore this email.
-                    </p>
+            <div style="
+                margin: 30px 0;
+                text-align: center;
+                background-color: #f8fafc;
+                padding: 25px;
+                border-radius: 8px;
+                border: 1px solid #e2e8f0;
+            ">
 
-                    <p>
-                        Regards,<br>
-                        AI Resume Analyzer
-                    </p>
+                <p style="
+                    margin: 0 0 12px 0;
+                    color: #64748b;
+                    font-size: 13px;
+                ">
+                    Your verification code
+                </p>
+
+                <div style="
+                    display: inline-block;
+                    padding: 14px 28px;
+                    background-color: #6366f1;
+                    color: #ffffff;
+                    border-radius: 7px;
+                    font-size: 28px;
+                    font-weight: bold;
+                    letter-spacing: 6px;
+                ">
+                    ${otp}
                 </div>
-            `,
+
+                <p style="
+                    margin: 15px 0 0 0;
+                    color: #64748b;
+                    font-size: 13px;
+                ">
+                    This OTP is valid for <strong>10 minutes</strong>.
+                </p>
+            </div>
+
+            <div style="
+                padding: 18px;
+                background-color: #fff7ed;
+                border-left: 4px solid #f59e0b;
+                border-radius: 5px;
+                color: #374151;
+                font-size: 14px;
+                line-height: 1.7;
+            ">
+
+                <strong>Security Notice</strong>
+
+                <p style="margin: 8px 0 0 0;">
+                    AI Resume Analyzer will never ask you to share your
+                    OTP or password with anyone.
+                </p>
+
+            </div>
+
+            <div style="
+                margin-top: 25px;
+                color: #374151;
+                font-size: 14px;
+                line-height: 1.7;
+            ">
+
+                <p>
+                    If you did not request a password reset, you can safely
+                    ignore this email. Your account will remain secure.
+                </p>
+
+                <p>
+                    For your security, please do not share this verification
+                    code with anyone.
+                </p>
+
+            </div>
+
+            <div style="
+                margin: 30px 0;
+                border-top: 1px solid #e5e7eb;
+            "></div>
+
+            <div style="
+                text-align: center;
+                color: #6b7280;
+                font-size: 13px;
+                line-height: 1.6;
+            ">
+
+                <p style="margin: 0 0 8px 0;">
+                    Thank you for using
+                    <strong>AI Resume Analyzer</strong>.
+                </p>
+
+                <p style="margin: 0;">
+                    Best regards,<br>
+                    <strong>AI Resume Analyzer Team</strong>
+                </p>
+
+            </div>
+
+            </div>
+
+            <div style="
+                text-align: center;
+                margin-top: 20px;
+                color: #9ca3af;
+                font-size: 12px;
+            ">
+                <p>
+                    This is an automated email. Please do not reply to this message.
+                </p>
+            </div>
+
+            </div>
+            `
         });
 
-        if (error) {
-            console.error("Resend Error:", error);
-
-            return res.status(500).json({
-                message: "Could not send OTP.",
-            });
-        }
-
-        console.log("OTP email sent:", data);
-
-        return res.status(200).json({
-            message: "OTP sent successfully.",
+        res.json({
+            message: "OTP sent successfully."
         });
 
     } catch (error) {
+
         console.error("Send OTP Error:", error);
 
-        return res.status(500).json({
-            message: "Could not send OTP.",
+        res.status(500).json({
+            message: "Could not send OTP."
         });
     }
 });
+
 // ===============================
 // FORGOT PASSWORD - VERIFY OTP
 // ===============================
